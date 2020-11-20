@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: linchaoting
  * @Date: 2020-09-26 18:22:07
- * @LastEditTime: 2020-09-26 23:11:11
+ * @LastEditTime: 2020-11-08 12:14:16
  */
 // Move the mouse across the screen as a sine wave.
 var robot = require("robotjs");
@@ -10,18 +10,14 @@ const cv = require('opencv4nodejs');
 const fs = require('fs')
 const inquirer = require('inquirer');
 const {findWindow,setWindowPos} = require('./src/win32')
-const { CLIENT_HEIGHT } = require('./src/config')
+const { CLIENT_HEIGHT } = require('./src/config');
+const yuhun = require("./src/yuhun");
 
 const hwnd = findWindow('阴阳师-网易游戏')
 setWindowPos(hwnd,0,0,0,0)
 setWindowPos(hwnd,0,0,0,CLIENT_HEIGHT)
 // Speed up the mouse.
 robot.setMouseDelay(2);
-
-
-async function name(){
-  console.log(2)
-}
 
 inquirer
   .prompt([{
@@ -34,18 +30,24 @@ inquirer
       '御魂-队员',
       '御灵',
       '业原火',
-      '周年庆'
+      '活动'
     ]
   }])
   .then(({inquirer_1}) => {
     switch (inquirer_1) {
-      case '御魂':
-        console.log('刷御魂')
+      case '御魂-单人':
+        yuhun.start(1)
+        break;
+      case '御魂-队长':
+        yuhun.start(2)
+        break;
+      case '御魂-队员':
+        yuhun.start(3)
         break;
       case '业原火':
         console.log('业原火')
         break;
-      case '周年庆':
+      case '活动':
         console.log('周年庆')
         break;
       default:

@@ -2,20 +2,9 @@
  * @Description: 
  * @Author: linchaoting
  * @Date: 2020-09-26 21:57:05
- * @LastEditTime: 2020-09-27 00:01:53
+ * @LastEditTime: 2020-11-21 00:50:21
  */
-const ffi = require('ffi');
-const ref = require('ref');
-const Struct = require('ref-struct');
-
-
-// Import user32
-const rectStruct =  Struct({
-  left: ffi.types.ulong,
-  top: ffi.types.ulong,
-  right: ffi.types.ulong,
-  bottom: ffi.types.ulong
-})
+const ffi = require('ffi-napi');
 
 const user32 = new ffi.Library("user32", {
   FindWindowW: ["int32", ["string", "string"]],
@@ -66,12 +55,12 @@ module.exports={
   setWindowPos:setWindowPos
 }
 
-const hwnd = findWindow('阴阳师-网易游戏')
-setWindowPos(hwnd,0,0,0,0)
-setTimeout(() => {
-  setWindowPos(hwnd,0,0,720,360)
-  console.log(getWindowRect(hwnd))
-}, 100);
+// const hwnd = findWindow('阴阳师-网易游戏')
+// setWindowPos(hwnd,0,0,0,0)
+// setTimeout(() => {
+//   setWindowPos(hwnd,0,0,720,360)
+//   console.log(getWindowRect(hwnd))
+// }, 100);
 
 
 
