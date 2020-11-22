@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: linchaoting
  * @Date: 2020-09-26 23:14:26
- * @LastEditTime: 2020-11-08 12:16:49
+ * @LastEditTime: 2020-11-21 01:13:46
  */
 const CONFIG = require('./config')
 const robot = require("robotjs");
@@ -65,7 +65,6 @@ function checkEnd(){
     isFirst = false
     const screen = robot.screen.capture(0, 0, CONFIG.CLIENT_WIDTH, CONFIG.CLIENT_HEIGHT);
     const {val,x,y} = matchInScreen(screen,matArr[step])
-    console.log(`步骤${step},结束相似度${val}`)
     const MATCH_VALUE_LIMIT = step===1?0.8:0.96
     if (val>MATCH_VALUE_LIMIT) {
       if (step===2) {
