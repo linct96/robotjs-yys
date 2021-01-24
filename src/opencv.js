@@ -1,9 +1,13 @@
 const robot = require("robotjs");
 const cv = require('opencv4nodejs');
 const CONFIG = require('./config')
+const {sleep} = require('./utils')
+const {findWindow,click,setWindowPos} = require('./win32')
 class OpencvLoop{
-  constructor(){
+  constructor(hWnd_1,hWnd_2){
     // super()
+    this.hWnd_1 = hWnd_1
+    this.hWnd_2 = hWnd_2
     this.workingFlag = false
     this.curStep = 0 //从第几个任务开始循环
     this.count = 0 //循环次数
@@ -11,18 +15,32 @@ class OpencvLoop{
     this.loopTaskArr = [] //循环队列
   }
 
+  mouseClick(x,y){
+    if (this.hWnd_1) {
+      click(this.hWnd_1,x,y)
+    }
+    if (this.hWnd_2) {
+      click(this.hWnd_2,x,y)
+    }
+  }
+
 
   add(task){
+    const self = this
     const initialTask = (task) => {
       task.title = task.title || `匹配第${this.loopTaskArr.length+1}步`
       task.matchedLimit = task.matchedLimit || 0.9
       task.callback = task.callback || function({val,x,y}){
-        robot.setMouseDelay(task.mouseDelay || 400);
+        const offsetX = 8
+        const offsetY = 31
         const clickX = x + Math.random()*task.target.cols
         const clickY = y + Math.random()*task.target.rows
-        robot.moveMouse(clickX, clickY);
-        console.log(`${(new Date()).getSeconds()}，${task.title}已完成，  匹配度：${val.toFixed(4)},X:${clickX.toFixed(4)},Y:${clickY.toFixed(4)}`)
-        robot.mouseClick();
+        sleep(task.mouseDelay || 400)
+        self.mouseClick(clickX-offsetX,clickY-offsetY)
+        // robot.setMouseDelay(task.mouseDelay || 400);
+        // robot.moveMouse(clickX, clickY);
+        // robot.mouseClick();
+        console.log(`${(new Date()).getSeconds()}，${task.title}已完成,匹配度：${val.toFixed(2)},X:${clickX.toFixed(1)},Y:${clickY.toFixed(1)}`)
       }
     }
     
